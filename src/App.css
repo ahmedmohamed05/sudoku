@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Add accessible line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 8. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
+
+body {
+  background-color: #f8f9fa;
+}
+
+/* 
+.sudoku-square-item-1 {
+  border-color: green;
+}
+
+.sudoku-square-item-2 {
+  border-color: blue;
+}
+
+.sudoku-square-item-3 {
+  border-color: yellow;
+}
+
+.sudoku-square-item-4 {
+  border-color: orange;
+}
+
+.sudoku-square-item-5 {
+  border-color: chartreuse;
+}
+
+.sudoku-square-item-6 {
+  border-color: lightblue;
+}
+
+.sudoku-square-item-7 {
+  border-color: cyan;
+}
+
+.sudoku-square-item-8 {
+  border-color: magenta;
+}
+
+.sudoku-square-item-9 {
+  border-color: purple;
+} */
+
+.border-bottom {
+  position: relative;
+}
+.border-bottom::after {
+  content: "";
+  width: calc(100% - 6px);
+  height: 3px;
+  background-color: blue;
+  position: absolute;
+  right: 3px;
+  bottom: -2px;
+}
+
+.border-right {
+  position: relative;
+}
+
+.border-right::after {
+  content: "";
+  width: 3px;
+  height: calc(100% + 1.25rem);
+  background-color: blue;
+  position: absolute;
+  right: -7px;
+  top: -3px;
+}
+
+.highlight {
+  background-color: rgba(255, 255, 0, 0.41);
+}
