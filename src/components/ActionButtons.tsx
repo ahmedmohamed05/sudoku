@@ -16,7 +16,7 @@ function ActionButtons({
   solveHandler,
 }: ActionButtonsProps) {
   return (
-    <div className="buttons">
+    <div className=" flex justify-center items-center gap-2 flex-wrap">
       <Button text="Reset" bgColor="#dc3545" clickHandler={resetHandler} />
       <Button
         text="Re-generate"

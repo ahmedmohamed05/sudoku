@@ -11,7 +11,7 @@ function Button({ text, bgColor, clickHandler }: ButtonProps) {
         clickHandler();
       }}
       style={{ backgroundColor: bgColor }}
-      className="border-2 hover:scale-110 mx-2 cursor-pointer py-2 px-4 transition-transform text-lg"
+      className="border-2 hover:scale-110 cursor-pointer py-2 px-4 transition-transform text-lg"
     >
       {text}
     </button>
