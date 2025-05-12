@@ -7,7 +7,7 @@ import {
   isValidSolution,
 } from "./features/gird.ts";
 import isValidRange from "./features/validate-range.ts";
-import Button from "./components/Button.tsx";
+import ActionButtons from "./components/ActionButtons.tsx";
 import MapGrid from "./components/Grid.tsx";
 import type { Grid, GridItemValues } from "./features/types.ts";
 
@@ -78,16 +78,12 @@ function App() {
           <MapGrid grid={grid} changeHandler={onChangeHandler} />
         </div>
       </main>
-      <div className="buttons">
-        <Button text="Reset" bgColor="#dc3545" clickHandler={resetHandler} />
-        <Button
-          text="Re-generate"
-          bgColor="#ffc107 "
-          clickHandler={generateNewGridHandler}
-        />
-        <Button text="Check" bgColor="#0dcaf0" clickHandler={checkSolHandler} />
-        <Button bgColor="#198754" text="Solve" clickHandler={solveHandler} />
-      </div>
+      <ActionButtons
+        checkSolHandler={checkSolHandler}
+        reGenerateGridHandler={generateNewGridHandler}
+        solveHandler={solveHandler}
+        resetHandler={resetHandler}
+      />
     </div>
   );
 }
