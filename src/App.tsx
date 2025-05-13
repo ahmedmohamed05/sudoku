@@ -118,7 +118,7 @@ function App() {
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-center flex-col gap-4">
+    <div className="w-full h-dvh flex justify-center items-center flex-col gap-4">
       <h1 className="font-bold text-4xl text-center px-2">{titleText}</h1>
       <main>
         <div className="flex flex-col overflow-hidden">

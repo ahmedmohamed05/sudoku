@@ -67,43 +67,6 @@ body {
   background-color: #f8f9fa;
 }
 
-/* 
-.sudoku-square-item-1 {
-  border-color: green;
-}
-
-.sudoku-square-item-2 {
-  border-color: blue;
-}
-
-.sudoku-square-item-3 {
-  border-color: yellow;
-}
-
-.sudoku-square-item-4 {
-  border-color: orange;
-}
-
-.sudoku-square-item-5 {
-  border-color: chartreuse;
-}
-
-.sudoku-square-item-6 {
-  border-color: lightblue;
-}
-
-.sudoku-square-item-7 {
-  border-color: cyan;
-}
-
-.sudoku-square-item-8 {
-  border-color: magenta;
-}
-
-.sudoku-square-item-9 {
-  border-color: purple;
-} */
-
 .border-bottom {
   position: relative;
 }
