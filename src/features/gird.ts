@@ -21,6 +21,7 @@ export enum DifficultyLevel {
   Easy,
   Medium,
   Hard,
+  Expert,
 }
 
 function numberOfCellsToHide(level: DifficultyLevel) {
@@ -38,6 +39,10 @@ function numberOfCellsToHide(level: DifficultyLevel) {
     case DifficultyLevel.Hard:
       min = 40;
       max = 49;
+      break;
+    case DifficultyLevel.Expert:
+      min = 50;
+      max = 65;
       break;
   }
 
