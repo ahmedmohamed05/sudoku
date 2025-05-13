@@ -21,3 +21,5 @@ export interface Puzzle {
   grid: Grid;
   sol: Grid;
 }
+
+export type ActionType = "solve" | "reset" | "regenerate" | "change level";

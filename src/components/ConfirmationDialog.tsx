@@ -1,15 +1,17 @@
-export interface ConfirmationDialogProps {
+import ConfirmationButtons, {
+  type ConfirmationButtonsProps,
+} from "./ConfirmationButtons";
+
+export interface ConfirmationDialogProps extends ConfirmationButtonsProps {
   title: string;
-  children: React.ReactNode;
-  onCancel: () => void;
   show: boolean;
 }
 
 function ConfirmationDialog({
   title,
-  children,
-  onCancel,
   show,
+  onConfirm,
+  onCancel,
 }: ConfirmationDialogProps) {
   if (!show) return null;
 
@@ -18,13 +20,7 @@ function ConfirmationDialog({
       <p className="font-bold text-2xl text-center mb-4 text-gray-100">
         {title}
       </p>
-      {children}
-      <button
-        onClick={() => onCancel}
-        className="block  bg-amber-50 py-2 px-4  cursor-pointer hover:-translate-y-0.5 transition-transform text-xl"
-      >
-        Cancel
-      </button>
+      <ConfirmationButtons onConfirm={onConfirm} onCancel={onCancel} />
     </div>
   );
 }

@@ -9,26 +9,32 @@ import {
 import isValidRange from "./features/validate-range.ts";
 import ActionButtons from "./components/ActionButtons.tsx";
 import MapGrid from "./components/Grid.tsx";
-import type { Grid, GridItemValues } from "./features/types.ts";
-import ConfirmationDialog, {
-  type ConfirmationDialogProps,
-} from "./components/ConfirmationDialog.tsx";
+import type { ActionType, Grid, GridItemValues } from "./features/types.ts";
+import ConfirmationDialog from "./components/ConfirmationDialog.tsx";
 import LevelsButtons from "./components/LevelsButtons.tsx";
+import getActionMessage from "./features/getActionMsg.ts";
+
+interface ConfirmationState {
+  show: boolean;
+  action: ActionType | null;
+}
 
 function App() {
   const [sol, setSol] = useState<Grid>(generateNewGrid());
   const [grid, setGrid] = useState<Grid>([]);
   const [titleText, setTitleText] = useState("Here Is Your Sudoku");
   const [level, setLevel] = useState(DifficultyLevel.Expert);
-  const [confirmProps, setConfirmProps] = useState<ConfirmationDialogProps>({
-    title: "Select Difficulty Level",
-    children: <LevelsButtons setLevel={setLevelHandler} />,
-    show: true,
-    onCancel: cancelConfirmationDialog,
-  });
+  const [solveBtnClicked, setSolveBtnClicked] = useState(false);
+  const [confirmationState, setConfirmationState] = useState<ConfirmationState>(
+    { show: false, action: null }
+  );
+  const [showLevels, setShowLevels] = useState(true);
 
   useEffect(() => {
+    setSolveBtnClicked(false);
+    // setShowLevels(true);
     setGrid(hideCells(sol, level));
+    setTitleText("Here Is Your Sudoku");
   }, [sol, level]);
 
   const onChangeHandler = (row: number, col: number, val: string): void => {
@@ -44,7 +50,9 @@ function App() {
     });
   };
 
-  const resetHandler = () => {
+  // const handelReset
+  // Action Handlers
+  const handleReset = () => {
     setGrid((prev) =>
       Array.from(
         prev.map((row) =>
@@ -56,22 +64,21 @@ function App() {
       )
     );
   };
-
-  const generateNewGridHandler = () => {
-    setSol(generateNewGrid());
-    setConfirmProps((prev) => ({ ...prev, show: true }));
-  };
-
+  const handelRegenerateGrid = () => setSol(generateNewGrid());
   const checkSolHandler = () => {
+    if (solveBtnClicked) {
+      setTitleText("You Have To Solve It, I Know You Can");
+      return;
+    }
+
     const ret = isValidSolution(grid);
-    if (ret) {
+    if (ret && !solveBtnClicked) {
       setTitleText("Congratulation You Solved It !!!");
     } else {
-      setTitleText("Good Job So Far Keep Trying !");
+      setTitleText("Good Job So Far Keep Going !");
     }
   };
-
-  const solveHandler = () => {
+  const handleSolve = () => {
     setGrid((prev) => {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
@@ -81,19 +88,38 @@ function App() {
       return Array.from(prev);
     });
   };
+  const handleChangeLevel = () => {
+    setShowLevels(true);
+    setSol(generateNewGrid());
+  };
 
-  function setLevelHandler(level: DifficultyLevel) {
-    setLevel(level);
-    cancelConfirmationDialog();
-  }
-
-  function cancelConfirmationDialog() {
-    setConfirmProps((prev) => ({ ...prev, show: false }));
-  }
+  // Confirmation Handlers
+  const handleCancelConfirmation = () => {
+    setConfirmationState({ show: false, action: null });
+  };
+  const handleConfirmedAction = () => {
+    switch (confirmationState.action) {
+      case "solve":
+        handleSolve();
+        break;
+      case "reset":
+        handleReset();
+        break;
+      case "regenerate":
+        handelRegenerateGrid();
+        break;
+      case "change level":
+        handleChangeLevel();
+        break;
+      default:
+        return;
+    }
+    handleCancelConfirmation();
+  };
 
   return (
     <div className="w-full h-screen flex justify-center items-center flex-col gap-4">
-      <h1 className="font-bold text-5xl text-center px-2">{titleText}</h1>
+      <h1 className="font-bold text-4xl text-center px-2">{titleText}</h1>
       <main>
         <div className="flex flex-col overflow-hidden">
           <MapGrid grid={grid} changeHandler={onChangeHandler} />
@@ -101,14 +127,33 @@ function App() {
       </main>
       <ActionButtons
         checkSolHandler={checkSolHandler}
-        reGenerateGridHandler={generateNewGridHandler}
-        solveHandler={solveHandler}
-        resetHandler={resetHandler}
+        reGenerateGridHandler={() =>
+          setConfirmationState({ show: true, action: "regenerate" })
+        }
+        solveHandler={() =>
+          setConfirmationState({ show: true, action: "reset" })
+        }
+        resetHandler={() =>
+          setConfirmationState({ show: true, action: "reset" })
+        }
+        changeLevelHandler={() =>
+          setConfirmationState({ show: true, action: "change level" })
+        }
       />
 
       <ConfirmationDialog
-        {...confirmProps}
-        onCancel={cancelConfirmationDialog}
+        title={getActionMessage(confirmationState.action as ActionType)}
+        onConfirm={handleConfirmedAction}
+        onCancel={handleCancelConfirmation}
+        show={confirmationState.show}
+      />
+
+      <LevelsButtons
+        show={showLevels}
+        setLevel={(level: DifficultyLevel) => {
+          setLevel(level);
+          setShowLevels(false);
+        }}
       />
     </div>
   );

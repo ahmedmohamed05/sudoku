@@ -13,7 +13,7 @@ function LevelButton({ text, styles, clickHandler, level }: LevelButtonProps) {
     <button
       onClick={() => clickHandler(level)}
       style={styles}
-      className="text-black py-2 px-4 text-xl transition-transform hover:-translate-y-1 cursor-pointer"
+      className="text-black py-2 px-4 text-xl transition-transform hover:-translate-y-1 cursor-pointer max-md:w-full"
     >
       {text}
     </button>

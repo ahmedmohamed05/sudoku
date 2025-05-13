@@ -7,6 +7,7 @@ export interface ActionButtonsProps {
   reGenerateGridHandler: HandlerType;
   checkSolHandler: HandlerType;
   solveHandler: HandlerType;
+  changeLevelHandler: HandlerType;
 }
 
 function ActionButtons({
@@ -14,6 +15,7 @@ function ActionButtons({
   reGenerateGridHandler,
   checkSolHandler,
   solveHandler,
+  changeLevelHandler,
 }: ActionButtonsProps) {
   return (
     <div className=" flex justify-center items-center gap-2 flex-wrap">
@@ -25,6 +27,11 @@ function ActionButtons({
       />
       <Button text="Check" bgColor="#0dcaf0" clickHandler={checkSolHandler} />
       <Button bgColor="#198754" text="Solve" clickHandler={solveHandler} />
+      <Button
+        bgColor="#b78cff"
+        text="Change Level"
+        clickHandler={changeLevelHandler}
+      />
     </div>
   );
 }
