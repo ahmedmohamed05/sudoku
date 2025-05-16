@@ -29,8 +29,8 @@ function numberOfCellsToHide(level: DifficultyLevel) {
     max = 0;
   switch (level) {
     case DifficultyLevel.Easy:
-      min = 20;
-      max = 29;
+      min = 1;
+      max = 3;
       break;
     case DifficultyLevel.Medium:
       min = 30;
@@ -183,17 +183,34 @@ function isValidSubGrid(grid: Grid, row: number, col: number): boolean {
 }
 
 export function isValidSolution(grid: Grid): boolean {
+  // Check for empty cells
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
-      if (grid[i][j].item == "") return false;
+      if (grid[i][j].item == "") {
+        console.log("Empty Cell at ", i, j);
+        return false;
+      }
     }
   }
 
   for (let i = 0; i < 9; i++) {
-    if (!(isValidRow(grid, i) || isValidCol(grid, i))) return false;
+    if (!isValidRow(grid, i)) {
+      console.log("invalid row", i);
+      return false;
+    }
+    if (!isValidCol(grid, i)) {
+      console.log("invalid row", i);
+    }
+    // if (!(isValidRow(grid, i) || isValidCol(grid, i))) {
+    //   console.log("invalid row or col at", i);
+    //   return false;
+    // }
 
     for (let j = 0; j < 9; j++) {
-      if (!isValidSubGrid(grid, i, j)) return false;
+      if (!isValidSubGrid(grid, i, j)) {
+        console.log("invalid sub-grid ", i);
+        return false;
+      }
     }
   }
 

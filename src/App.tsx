@@ -8,7 +8,7 @@ import {
 } from "./features/gird.ts";
 import isValidRange from "./features/validate-range.ts";
 import ActionButtons from "./components/ActionButtons.tsx";
-import MapGrid from "./components/Grid.tsx";
+import MapGrid, { type Highlight } from "./components/Grid.tsx";
 import type { ActionType, Grid, GridItemValues } from "./features/types.ts";
 import ConfirmationDialog from "./components/ConfirmationDialog.tsx";
 import LevelsButtons from "./components/LevelsButtons.tsx";
@@ -22,7 +22,12 @@ interface ConfirmationState {
 function App() {
   const [sol, setSol] = useState<Grid>(generateNewGrid());
   const [grid, setGrid] = useState<Grid>([]);
+  const [highlightedCells, setHighlightedCells] = useState<Highlight>({
+    row: 0,
+    col: 0,
+  });
   const [titleText, setTitleText] = useState("Here Is Your Sudoku");
+  const [puzzleSolved, setPuzzleSolved] = useState(false);
   const [level, setLevel] = useState(DifficultyLevel.Expert);
   const [solveBtnClicked, setSolveBtnClicked] = useState(false);
   const [confirmationState, setConfirmationState] = useState<ConfirmationState>(
@@ -32,12 +37,13 @@ function App() {
 
   useEffect(() => {
     setSolveBtnClicked(false);
-    // setShowLevels(true);
     setGrid(hideCells(sol, level));
     setTitleText("Here Is Your Sudoku");
+    setPuzzleSolved(false);
   }, [sol, level]);
 
-  const onChangeHandler = (row: number, col: number, val: string): void => {
+  // cell actions handlers
+  const handleChange = (row: number, col: number, val: string): void => {
     if (!isValidRange(val)) return;
 
     setGrid((prev) => {
@@ -48,6 +54,10 @@ function App() {
 
       return Array.from(prev);
     });
+  };
+
+  const handleCellClick = (row: number, col: number) => {
+    setHighlightedCells({ row, col });
   };
 
   // const handelReset
@@ -72,11 +82,13 @@ function App() {
     }
 
     const ret = isValidSolution(grid);
-    if (ret && !solveBtnClicked) {
+    if (ret) {
       setTitleText("Congratulation You Solved It !!!");
+      setPuzzleSolved(true);
     } else {
       setTitleText("Good Job So Far Keep Going !");
     }
+    console.log(ret);
   };
   const handleSolve = () => {
     setGrid((prev) => {
@@ -119,10 +131,20 @@ function App() {
 
   return (
     <div className="w-full h-dvh flex justify-center items-center flex-col gap-4">
-      <h1 className="font-bold text-4xl text-center px-2">{titleText}</h1>
+      <h1
+        className="font-bold text-4xl text-center px-2"
+        style={{ color: puzzleSolved ? "blue" : "black" }}
+      >
+        {titleText}
+      </h1>
       <main>
         <div className="flex flex-col overflow-hidden">
-          <MapGrid grid={grid} changeHandler={onChangeHandler} />
+          <MapGrid
+            grid={grid}
+            changeHandler={handleChange}
+            handleClick={handleCellClick}
+            highlight={highlightedCells}
+          />
         </div>
       </main>
       <ActionButtons
